@@ -9,7 +9,7 @@ terraform {
 
 module "apigw" {
   source  = "armorfret/apigw-lambda/aws"
-  version = "0.6.2"
+  version = "0.6.3"
 
   source_bucket  = var.lambda_bucket
   source_version = var.lambda_version
@@ -112,5 +112,15 @@ data "aws_iam_policy_document" "auth_lambda_perms" {
     resources = [
       "arn:aws:logs:*:*:*",
     ]
+  }
+}
+
+resource "aws_api_gateway_gateway_response" "this" {
+  rest_api_id   = module.apigw.rest_api_id
+  status_code   = "401"
+  response_type = "UNAUTHORIZED"
+
+  response_parameters = {
+    "gatewayresponse.header.WWW-Authenticate" = "'Basic'"
   }
 }
