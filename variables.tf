@@ -14,6 +14,11 @@ variable "config_bucket" {
   type        = string
 }
 
+variable "auth_config_bucket" {
+  description = "S3 bucket to use for auth configuration"
+  type        = string
+}
+
 variable "data_bucket" {
   description = "S3 bucket from which to read data"
   type        = string
@@ -22,6 +27,17 @@ variable "data_bucket" {
 variable "lambda_bucket" {
   description = "S3 bucket from which to read the Lambda ZIP"
   type        = string
+}
+
+variable "auth_lambda_bucket" {
+  description = "S3 bucket from which to read the auth Lambda ZIP"
+  type        = string
+}
+
+variable "auth_lambda_version" {
+  description = "Version of the Lambda to use"
+  type        = string
+  default     = "v0.0.2"
 }
 
 variable "hostname" {

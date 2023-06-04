@@ -9,7 +9,7 @@ terraform {
 
 module "apigw" {
   source  = "armorfret/apigw-lambda/aws"
-  version = "0.5.2"
+  version = "0.6.0"
 
   source_bucket  = var.lambda_bucket
   source_version = var.lambda_version
@@ -27,6 +27,14 @@ module "apigw" {
   binary_media_types = [
     "*/*",
   ]
+
+  auth_source_bucket  = var.auth_lambda_bucket
+  auth_source_version = var.auth_lambda_version
+  auth_environment_variables = {
+    S3_BUCKET = var.auth_config_bucket
+    S3_KEY    = "config.yaml"
+  }
+  auth_access_policy_document = data.aws_iam_policy_document.auth_lambda_perms.json
 }
 
 module "publish_user" {
@@ -44,6 +52,13 @@ module "config_user" {
   count          = var.config_bucket == var.data_bucket ? 0 : 1
 }
 
+module "auth_config_user" {
+  source         = "armorfret/s3-publish/aws"
+  version        = "0.7.0"
+  logging_bucket = var.logging_bucket
+  publish_bucket = var.auth_config_bucket
+}
+
 data "aws_iam_policy_document" "lambda_perms" {
   statement {
     actions = [
@@ -58,6 +73,33 @@ data "aws_iam_policy_document" "lambda_perms" {
       "arn:aws:s3:::${var.config_bucket}/*",
       "arn:aws:s3:::${var.config_bucket}",
     ])
+  }
+
+  statement {
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+    ]
+
+    resources = [
+      "arn:aws:logs:*:*:*",
+    ]
+  }
+}
+
+data "aws_iam_policy_document" "auth_lambda_perms" {
+  statement {
+    actions = [
+      "s3:ListBucket",
+      "s3:GetObject",
+      "s3:PutObject",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${var.auth_config_bucket}/*",
+      "arn:aws:s3:::${var.auth_config_bucket}",
+    ]
   }
 
   statement {
