@@ -120,6 +120,10 @@ resource "aws_api_gateway_gateway_response" "this" {
   status_code   = "401"
   response_type = "UNAUTHORIZED"
 
+  response_templates = {
+    "application/json" = "{'message':$context.error.messageString}"
+  }
+
   response_parameters = {
     "gatewayresponse.header.WWW-Authenticate" = "'Basic'"
   }
