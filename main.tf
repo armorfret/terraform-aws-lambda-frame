@@ -9,7 +9,7 @@ terraform {
 
 module "apigw" {
   source  = "armorfret/apigw-lambda/aws"
-  version = "0.6.5"
+  version = "0.6.6"
 
   source_bucket  = var.lambda_bucket
   source_version = var.lambda_version
@@ -35,6 +35,7 @@ module "apigw" {
     S3_KEY    = "config.yaml"
   }
   auth_access_policy_document = data.aws_iam_policy_document.auth_lambda_perms.json
+  auth_ttl                    = 0
 }
 
 module "publish_user" {
