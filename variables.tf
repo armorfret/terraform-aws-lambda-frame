@@ -37,7 +37,7 @@ variable "auth_lambda_bucket" {
 variable "auth_lambda_version" {
   description = "Version of the Lambda to use"
   type        = string
-  default     = "v0.0.3"
+  default     = "v0.0.4"
 }
 
 variable "hostname" {
