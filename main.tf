@@ -80,6 +80,15 @@ data "aws_iam_policy_document" "lambda_perms" {
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
+    ]
+
+    resources = [
+      "arn:aws:logs:*:*:log-group:/aws/lambda/frame_${var.data_bucket}",
+    ]
+  }
+
+  statement {
+    actions = [
       "logs:PutLogEvents",
     ]
 
@@ -107,6 +116,15 @@ data "aws_iam_policy_document" "auth_lambda_perms" {
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
+    ]
+
+    resources = [
+      "arn:aws:logs:*:*:log-group:/aws/lambda/frame_${var.data_bucket}_auth",
+    ]
+  }
+
+  statement {
+    actions = [
       "logs:PutLogEvents",
     ]
 
