@@ -9,7 +9,7 @@ terraform {
 
 module "apigw" {
   source  = "armorfret/apigw-lambda/aws"
-  version = "0.8.0"
+  version = "0.9.0"
 
   source_bucket  = var.lambda_bucket
   source_version = var.lambda_version
@@ -36,6 +36,8 @@ module "apigw" {
   }
   auth_access_policy_document = data.aws_iam_policy_document.auth_lambda_perms.json
   auth_ttl                    = 0
+
+  cloudwatch_retention_in_days = var.cloudwatch_retention_in_days
 }
 
 module "publish_user" {
