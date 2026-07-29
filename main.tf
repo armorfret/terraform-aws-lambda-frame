@@ -42,14 +42,14 @@ module "apigw" {
 
 module "publish_user" {
   source         = "armorfret/s3-publish/aws"
-  version        = "0.9.0"
+  version        = "0.9.1"
   logging_bucket = var.logging_bucket
   publish_bucket = var.data_bucket
 }
 
 module "config_user" {
   source         = "armorfret/s3-publish/aws"
-  version        = "0.9.0"
+  version        = "0.9.1"
   logging_bucket = var.logging_bucket
   publish_bucket = var.config_bucket
   count          = var.config_bucket == var.data_bucket ? 0 : 1
@@ -57,7 +57,7 @@ module "config_user" {
 
 module "auth_config_user" {
   source         = "armorfret/s3-publish/aws"
-  version        = "0.9.0"
+  version        = "0.9.1"
   logging_bucket = var.logging_bucket
   publish_bucket = var.auth_config_bucket
 }
